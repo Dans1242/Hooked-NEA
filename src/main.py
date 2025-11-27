@@ -9,7 +9,7 @@ pygame.init()
 gamescreen = pygame.display.set_mode((900, 550))
 pygame.display.set_caption("Hooked: Bestiary Odyssey")
 
-class MySprite(pygame.sprite.Sprite):
+class character(pygame.sprite.Sprite):
     def __init__(self, image_path, x, y):
         super().__init__()
         self.image = pygame.image.load(image_path).convert_alpha()
@@ -17,19 +17,19 @@ class MySprite(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
-    def move(self, dx, dy):
-        self.rect.x += dx
-        self.rect.y += dy
+    def move(self, changeInX, changeInY):
+        self.rect.x += changeInX
+        self.rect.y += changeInY
 
 
-my_sprite = MySprite(
-    r"C:\Users\User\Documents\Hooked-Bestiary-Odyssey\assets\sprites\aibaby.jpeg",
+playerSprite = character(
+    r"C:\Users\User\Documents\Hooked-Bestiary-Odyssey\assets\sprites\characterIdle.png",
     100,
     100
 )
 
 all_sprites = pygame.sprite.Group()
-all_sprites.add(my_sprite)
+all_sprites.add(playerSprite)
 
 running = True
 speed = 6  # movement speed (pixels per frame)
@@ -39,23 +39,21 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    # --- MOVEMENT HANDLING ---
-    keys = pygame.key.get_pressed()
+    wasd = pygame.key.get_pressed()
 
-    if keys[pygame.K_w]:
-        my_sprite.move(0, -speed)
-    if keys[pygame.K_s]:
-        my_sprite.move(0, speed)
-    if keys[pygame.K_a]:
-        my_sprite.move(-speed, 0)
-    if keys[pygame.K_d]:
-        my_sprite.move(speed, 0)
+    if wasd[pygame.K_w]:
+        playerSprite.move(0, -speed)
+    if wasd[pygame.K_s]:
+        playerSprite.move(0, speed)
+    if wasd[pygame.K_a]:
+        playerSprite.move(-speed, 0)
+    if wasd[pygame.K_d]:
+        playerSprite.move(speed, 0)
 
-    # --- DRAW EVERYTHING ---
-    gamescreen.fill((0, 0, 0))          # clear screen
-    all_sprites.draw(gamescreen)        # draw sprite
-    pygame.display.flip()               # update display
+    gamescreen.fill((0, 0, 0))          # clears the screen
+    all_sprites.draw(gamescreen)        # draws the sprite
+    pygame.display.flip()               # update the display
 
-    clock.tick(60)
+    clock.tick(60) # set fps
 
 pygame.quit()
