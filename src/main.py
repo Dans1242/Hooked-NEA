@@ -13,9 +13,11 @@ pygame.display.set_caption("Hooked: Bestiary Odyssey")
 
 
 characterIdleRight = playerClass(r"C:\Users\User\Documents\Hooked-Bestiary-Odyssey\assets\sprites\characterIdleRight.png", 100, 100)
+characterIdleLeft = playerClass(r"C:\Users\User\Documents\Hooked-Bestiary-Odyssey\assets\sprites\characterIdleLeft.png", 100, 100)
 
 characterSprites = pygame.sprite.Group()
 characterSprites.add(characterIdleRight)
+characterSprites.add(characterIdleLeft)
 
 running = True
 
