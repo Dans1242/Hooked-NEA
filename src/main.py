@@ -15,7 +15,7 @@ while running:
             running = False
     
     
-    gamescreen.fill((0, 0, 0))
+    gamescreen.fill((217, 177, 69))
     player.movementUpdate()
     player.playerDraw(gamescreen)
     pygame.display.flip()
