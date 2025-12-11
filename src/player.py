@@ -2,12 +2,11 @@ import pygame
 
 class Player:
    def __init__(self):
-      self.spriteRight = pygame.image.load(r"C:\Users\User\Documents\Hooked-Bestiary-Odyssey\assets\sprites\spriteRight.png")
-      self.spriteLeft = pygame.image.load(r"C:\Users\User\Documents\Hooked-Bestiary-Odyssey\assets\sprites\spriteLeft.png")
-      #self.spriteUp = pygame.image.load(r"C:\Users\User\Documents\Hooked-Bestiary-Odyssey\assets\sprites\spriteUp.png")
-      #self.spriteDown = pygame.image.load(r"C:\Users\User\Documents\Hooked-Bestiary-Odyssey\assets\sprites\spriteDown.png")
-      self.spriteFront = pygame.image.load(r"C:\Users\User\Documents\Hooked-Bestiary-Odyssey\assets\sprites\spriteFront.png")
-
+      self.spriteRight = pygame.image.load("../assets/sprites/spriteRight.png")
+      self.spriteLeft  = pygame.image.load("../assets/sprites/spriteLeft.png")
+      self.spriteFront = pygame.image.load("../assets/sprites/spriteFront.png")
+      #self.spriteUp = pygame.image.load("...\assets\sprites\spriteUp.png")
+      #self.spriteDown = pygame.image.load("...\assets\sprites\spriteDown.png")
       
         
       self.xPos = 450
@@ -32,11 +31,11 @@ class Player:
          self.direction = "right"
 
    def playerDraw(self, screen):
-      if self.direction == "up":
-         screen.blit(self.spriteUp, (self.xPos, self.yPos))
-      elif self.direction == "down":
-         screen.blit(self.spriteDown, (self.xPos, self.yPos))
-      elif self.direction == "left":
+      #if self.direction == "up":
+         #screen.blit(self.spriteUp, (self.xPos, self.yPos))
+      #elif self.direction == "down":
+         #screen.blit(self.spriteDown, (self.xPos, self.yPos))
+      if self.direction == "left":
          screen.blit(self.spriteLeft, (self.xPos, self.yPos))
       elif self.direction == "right":
          screen.blit(self.spriteRight, (self.xPos, self.yPos))
