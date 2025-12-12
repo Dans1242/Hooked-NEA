@@ -3,19 +3,21 @@ import pygame
 class Player:
    def __init__(self):
       self.spriteRight = pygame.image.load("../assets/sprites/spriteRight.png")
+      self.spriteRight = pygame.transform.scale(self.spriteRight, (12 * 5, 20 * 5))
       self.spriteLeft  = pygame.image.load("../assets/sprites/spriteLeft.png")
-      self.spriteFront = pygame.image.load("../assets/sprites/spriteFront.png")
-      #self.spriteUp = pygame.image.load("...\assets\sprites\spriteUp.png")
-      #self.spriteDown = pygame.image.load("...\assets\sprites\spriteDown.png")
-      
-        
+      self.spriteLeft = pygame.transform.scale(self.spriteLeft, (12 * 5, 20 * 5))
+      self.spriteUp = pygame.image.load("../assets/sprites/spriteUp.png")
+      self.spriteUp = pygame.transform.scale(self.spriteUp, (12 * 5, 20 * 5))
+      self.spriteDown = pygame.image.load("../assets/sprites/spriteDown.png")
+      self.spriteDown = pygame.transform.scale(self.spriteDown, (12 * 5, 20 * 5))
+       
+      self.direction = "right"
       self.xPos = 450
       self.yPos = 275
       self.speed = 5
 
 
    def movementUpdate(self):
-      self.direction = "front"
       keys = pygame.key.get_pressed()
       if keys[pygame.K_w]:
          self.yPos -= self.speed
@@ -31,13 +33,11 @@ class Player:
          self.direction = "right"
 
    def playerDraw(self, screen):
-      #if self.direction == "up":
-         #screen.blit(self.spriteUp, (self.xPos, self.yPos))
-      #elif self.direction == "down":
-         #screen.blit(self.spriteDown, (self.xPos, self.yPos))
-      if self.direction == "left":
+      if self.direction == "up":
+         screen.blit(self.spriteUp, (self.xPos, self.yPos))
+      elif self.direction == "down":
+         screen.blit(self.spriteDown, (self.xPos, self.yPos))
+      elif self.direction == "left":
          screen.blit(self.spriteLeft, (self.xPos, self.yPos))
       elif self.direction == "right":
          screen.blit(self.spriteRight, (self.xPos, self.yPos))
-      elif self.direction == "front":
-         screen.blit(self.spriteFront, (self.xPos, self.yPos))

@@ -1,9 +1,11 @@
 import pygame
 from player import Player
+from shop import Shop
 
 pygame.init()
 
 player = Player()
+shop = Shop()
 gamescreen = pygame.display.set_mode((900, 550))
 
 
@@ -23,6 +25,7 @@ while running:
     gamescreen.blit(background, (0, 0))
     player.movementUpdate()
     player.playerDraw(gamescreen)
+    shop.shopDraw(gamescreen)
     pygame.display.flip()
     clock.tick(60)
 
