@@ -23,9 +23,13 @@ while running:
     
     
     gamescreen.blit(background, (0, 0))
+    
+    shop.shopDraw(gamescreen)
+    
     player.movementUpdate()
     player.playerDraw(gamescreen)
-    shop.shopDraw(gamescreen)
+    
+    
     pygame.display.flip()
     clock.tick(60)
 
