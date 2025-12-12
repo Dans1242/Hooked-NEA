@@ -21,6 +21,11 @@ fishChances = [info["chance"] for info in bestiary.values()]
 fishRarityPairs = [(name, info["rarity"]) for name, info in bestiary.items()]
 
 def RNG():
-    return random.choice(fishNames, weights=fishChances)[0]
+    
+
+
+
+
+    
 catch = RNG()
 print(catch)
