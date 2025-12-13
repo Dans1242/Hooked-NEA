@@ -3,6 +3,10 @@ from RNG import RNG
 
 class Player:
    def __init__(self):
+      self.direction = "right"
+      self.xPos = 450
+      self.yPos = 275
+      self.speed = 5
       self.spriteRight = pygame.image.load("../assets/sprites/spriteRight.png")
       self.spriteRight = pygame.transform.scale(self.spriteRight, (12 * 5, 20 * 5))
       self.spriteLeft  = pygame.image.load("../assets/sprites/spriteLeft.png")
@@ -12,10 +16,11 @@ class Player:
       self.spriteDown = pygame.image.load("../assets/sprites/spriteDown.png")
       self.spriteDown = pygame.transform.scale(self.spriteDown, (12 * 5, 20 * 5))
        
-      self.direction = "right"
-      self.xPos = 450
-      self.yPos = 275
-      self.speed = 5
+
+      self.inventory = {}
+
+      self.coins = 0
+
 
 
    def movementUpdate(self):
@@ -42,4 +47,3 @@ class Player:
          screen.blit(self.spriteLeft, (self.xPos, self.yPos))
       elif self.direction == "right":
          screen.blit(self.spriteRight, (self.xPos, self.yPos))
-

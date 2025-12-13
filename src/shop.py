@@ -1,4 +1,5 @@
 import pygame
+from RNG import RNG
 
 class Shop:
     def __init__(self):
@@ -9,3 +10,13 @@ class Shop:
 
     def shopDraw(self, screen):
         screen.blit(self.sprite, (self.xPos, self.yPos))
+
+    def sellFish(self, player):
+        if player.inventory:
+            totalValue = 0
+            for RNG.fishName, info in player.inventory.items():
+                fishValue = info['value'] * info['quantity']
+                totalValue += fishValue
+            player.inventory.clear()
+            return totalValue
+        return 0
