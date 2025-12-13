@@ -1,8 +1,9 @@
 import pygame
+import os
 from player import Player
 from shop import Shop
 from RNG import RNG
-from save_load import save_game, load_game
+from save_load import save_game, load_game, pickSave
 
 #loottables
 lootTable1 = {
@@ -31,18 +32,29 @@ background = pygame.transform.scale(background, (900, 550)).convert()
 pygame.display.set_caption("Hooked: Bestiary Odyssey")
 clock = pygame.time.Clock()
 
-loaded = False
+
+
+chosenSave = pickSave()
+
+
+if os.path.exists(chosenSave):
+    load_game(player, chosenSave)
+    print("Game loaded successfully.")
+else:
+    player.inventory = {}
+    player.coins = 0
+    save_game(player, chosenSave)
+    print("New save file created.")
+
 
 running = True
 while running:
-    if not loaded:
-        loaded = load_game(player)
+    
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            save_game(player)
-            if save_game:
-                print("Game saved successfully.")
+            save_game(player, chosenSave)
+            print("Game saved successfully.")
             running = False
 
         if event.type == pygame.KEYDOWN:
