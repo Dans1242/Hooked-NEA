@@ -3,6 +3,20 @@ from player import Player
 from shop import Shop
 from RNG import RNG
 
+#loottables
+lootTable1 = {
+    "Salmon" : {"rarity": "Common", "chance": 0.45, "value": 5},
+    "Carp" : {"rarity": "Common", "chance": 0.4, "value": 6},
+    "Cod" : {"rarity": "Rare", "chance": 0.25, "value": 12},
+    "Tuna" : {"rarity": "Rare", "chance": 0.20, "value": 15},
+    "Crab" : {"rarity": "Epic", "chance": 0.05, "value": 45},
+    "Swordfish" : {"rarity": "Epic", "chance": 0.04, "value": 50},
+    "Jellyfish" : {"rarity": "Legendary", "chance": 0.006, "value": 160},
+    "Shark" : {"rarity": "Legendary", "chance": 0.006, "value": 170},
+    "Whale" : {"rarity": "Mythic", "chance": 0.004, "value": 500},
+    "Void Serpent" : {"rarity": "Secret", "chance": 0.001, "value": 2000},
+}
+
 pygame.init()
 
 player = Player()
@@ -24,7 +38,7 @@ while running:
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_e:
-                caughtFish = RNG()
+                caughtFish = RNG(lootTable1)
                 print("You caught a " + caughtFish[0] + "! Rarity: " + caughtFish[1] + ", Chance: " + caughtFish[2] + ", Value: " + str(caughtFish[3]) + " coins")
                 fishName = caughtFish[0]
                 if fishName in player.inventory:
