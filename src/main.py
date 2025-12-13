@@ -43,6 +43,15 @@ while running:
                 for fishName, info in player.inventory.items():   
                     print(f"{info['quantity']}x {fishName}")
 
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_q:
+                confirmation = input("Are you sure you want to sell all your fish? (y/n): ")   
+                if confirmation.lower() == 'y':
+                    totalEarnings = shop.sellFish(player)
+                    print(f"You sold all your fish for {totalEarnings} coins!")
+                else:
+                    print("Sale cancelled.")
+
     player.movementUpdate()
     
     gamescreen.blit(background, (0, 0)) 
