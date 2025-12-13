@@ -12,9 +12,12 @@ def save_game(player, filename="saves/save1.json"):
     with open(filename, "w") as save_file: #w means write mode
         json.dump(save_data, save_file)
 
-def load_game(player, filename="Save1.json"):
+def load_game(player, filename="saves/save1.json"):
     if os.path.exists(filename):
         with open(filename, "r") as save_file: #r means read mode
             save_data = json.load(save_file)
             player.inventory = save_data.get("inventory", {})
             player.coins = save_data.get("coins", 0)
+        return True
+    else:
+        print("No save file found.")

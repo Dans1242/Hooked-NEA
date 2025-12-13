@@ -31,11 +31,13 @@ background = pygame.transform.scale(background, (900, 550)).convert()
 pygame.display.set_caption("Hooked: Bestiary Odyssey")
 clock = pygame.time.Clock()
 
+loaded = False
+
 running = True
-load_game(player)
-if load_game:
-    print("Game loaded successfully.")
 while running:
+    if not loaded:
+        loaded = load_game(player)
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             save_game(player)
