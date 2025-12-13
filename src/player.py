@@ -19,6 +19,8 @@ class Player:
 
       self.inventory = {}
 
+      self.coins = 0
+
 
 
    def movementUpdate(self):

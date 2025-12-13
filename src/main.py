@@ -2,6 +2,7 @@ import pygame
 from player import Player
 from shop import Shop
 from RNG import RNG
+from save_load import save_game, load_game
 
 #loottables
 lootTable1 = {
@@ -31,9 +32,15 @@ pygame.display.set_caption("Hooked: Bestiary Odyssey")
 clock = pygame.time.Clock()
 
 running = True
+load_game(player)
+if load_game:
+    print("Game loaded successfully.")
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+            save_game(player)
+            if save_game:
+                print("Game saved successfully.")
             running = False
 
         if event.type == pygame.KEYDOWN:
@@ -63,8 +70,15 @@ while running:
                 if confirmation.lower() == 'y':
                     totalEarnings = shop.sellFish(player)
                     print(f"You sold all your fish for {totalEarnings} coins!")
+                    player.coins += totalEarnings
+                    print(f"You now have {player.coins} coins.")
                 else:
                     print("Sale cancelled.")
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_b:
+                print(f"You have {player.coins} coins.")
+
 
     player.movementUpdate()
     
