@@ -1,4 +1,5 @@
 import pygame
+from RNG import RNG
 
 class Player:
    def __init__(self):
@@ -41,3 +42,4 @@ class Player:
          screen.blit(self.spriteLeft, (self.xPos, self.yPos))
       elif self.direction == "right":
          screen.blit(self.spriteRight, (self.xPos, self.yPos))
+
