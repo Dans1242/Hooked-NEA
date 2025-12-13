@@ -21,4 +21,5 @@ fishChances = [info["chance"] for info in bestiary.values()]
 def RNG():
     catch = random.choices(fishNames, weights=fishChances, k=1)[0]
     info = bestiary[catch]
-    return (catch, info["rarity"], str(info["chance"]*100) + "%", info["value"])
+    return (catch, info["rarity"], str(info['chance']*100)+"%", info["value"])
+

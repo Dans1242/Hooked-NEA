@@ -17,7 +17,7 @@ class Player:
       self.spriteDown = pygame.transform.scale(self.spriteDown, (12 * 5, 20 * 5))
        
 
-      self.inventory = []
+      self.inventory = {}
 
 
 
@@ -45,5 +45,3 @@ class Player:
          screen.blit(self.spriteLeft, (self.xPos, self.yPos))
       elif self.direction == "right":
          screen.blit(self.spriteRight, (self.xPos, self.yPos))
-
-   
