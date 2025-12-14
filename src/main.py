@@ -7,17 +7,47 @@ from save_load import save_game, load_game, pickSave # imports functions needed 
 
 # Temporary loot tables listed below:
 
-lootTable1 = {
-    "Salmon" : {"rarity": "Common", "chance": 0.45, "value": 5},
-    "Carp" : {"rarity": "Common", "chance": 0.4, "value": 6},
-    "Cod" : {"rarity": "Rare", "chance": 0.25, "value": 12},
-    "Tuna" : {"rarity": "Rare", "chance": 0.20, "value": 15},
-    "Crab" : {"rarity": "Epic", "chance": 0.05, "value": 45},
-    "Swordfish" : {"rarity": "Epic", "chance": 0.04, "value": 50},
-    "Jellyfish" : {"rarity": "Legendary", "chance": 0.006, "value": 160},
-    "Shark" : {"rarity": "Legendary", "chance": 0.006, "value": 170},
-    "Whale" : {"rarity": "Mythic", "chance": 0.004, "value": 500},
-    "Void Serpent" : {"rarity": "Secret", "chance": 0.001, "value": 2000},
+#lootTable1 = {
+#    "Salmon" : {"rarity": "Common", "chance": 0.45, "value": 5},
+#    "Carp" : {"rarity": "Common", "chance": 0.4, "value": 6},
+#    "Cod" : {"rarity": "Rare", "chance": 0.25, "value": 12},
+#    "Tuna" : {"rarity": "Rare", "chance": 0.20, "value": 15},
+#    "Crab" : {"rarity": "Epic", "chance": 0.05, "value": 45},
+#    "Swordfish" : {"rarity": "Epic", "chance": 0.04, "value": 50},
+#    "Jellyfish" : {"rarity": "Legendary", "chance": 0.006, "value": 160},
+#    "Shark" : {"rarity": "Legendary", "chance": 0.006, "value": 170},
+#    "Whale" : {"rarity": "Mythic", "chance": 0.004, "value": 500},
+#    "Void Serpent" : {"rarity": "Secret", "chance": 0.001, "value": 2000},
+#}
+
+tempLootTable = {
+    # Common – bread and butter fish
+    "Minnow": {"rarity": "Common", "chance": 0.30, "value": 2},
+    "Carp": {"rarity": "Common", "chance": 0.25, "value": 5},
+    "Salmon": {"rarity": "Common", "chance": 0.20, "value": 7},
+    "Herring": {"rarity": "Common", "chance": 0.15, "value": 6},
+
+    # Uncommon – slightly exciting
+    "Trout": {"rarity": "Uncommon", "chance": 0.12, "value": 10},
+    "Bass": {"rarity": "Uncommon", "chance": 0.10, "value": 12},
+
+    # Rare – feels rewarding
+    "Cod": {"rarity": "Rare", "chance": 0.07, "value": 20},
+    "Tuna": {"rarity": "Rare", "chance": 0.06, "value": 25},
+
+    # Epic – big moments
+    "Swordfish": {"rarity": "Epic", "chance": 0.03, "value": 80},
+    "Giant Crab": {"rarity": "Epic", "chance": 0.025, "value": 90},
+
+    # Legendary – memorable catches
+    "Great White Shark": {"rarity": "Legendary", "chance": 0.01, "value": 250},
+    "Moon Jellyfish": {"rarity": "Legendary", "chance": 0.008, "value": 220},
+
+    # Mythic – very rare, very valuable
+    "Ancient Whale": {"rarity": "Mythic", "chance": 0.004, "value": 600},
+
+    # Secret – flex items, not expected
+    "Abyssal Serpent": {"rarity": "Secret", "chance": 0.001, "value": 2000}
 }
 
 pygame.init() # initializing the game
@@ -66,7 +96,7 @@ while running:
         if event.type == pygame.KEYDOWN:
 
             if event.key == pygame.K_e:
-                caughtFish = RNG(lootTable1) # generates a fish to be caught based on the paramater (lootTable1) i.e. gives a fish from the lootTable1
+                caughtFish = RNG(tempLootTable) # generates a fish to be caught based on the paramater (lootTable1) i.e. gives a fish from the lootTable1
 
                 print("You caught a " + caughtFish[0] + "! Rarity: " + caughtFish[1] + ", Chance: " + caughtFish[2] + ", Value: " + str(caughtFish[3]) + " coins")
                 fishName = caughtFish[0]

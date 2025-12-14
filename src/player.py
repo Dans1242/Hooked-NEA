@@ -8,7 +8,7 @@ class Player:
       self.yPos = 275
       self.speed = 5
       self.spriteRight = pygame.image.load("../assets/sprites/spriteRight.png")
-      #self.spriteRight = pygame.transform.scale(self.spriteRight, (12 * 5, 20 * 5))
+      self.spriteRight = pygame.transform.scale(self.spriteRight, (12 * 5, 20 * 5))
       self.spriteLeft  = pygame.image.load("../assets/sprites/spriteLeft.png")
       self.spriteLeft = pygame.transform.scale(self.spriteLeft, (12 * 5, 20 * 5))
       self.spriteUp = pygame.image.load("../assets/sprites/spriteUp.png")
