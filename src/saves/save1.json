@@ -1,1 +1,1 @@
-{"inventory": {}, "coins": 4444}
+{"inventory": {"Cod": {"quantity": 2, "rarity": "Rare", "chance": "25.0%", "value": 12}, "Salmon": {"quantity": 2, "rarity": "Common", "chance": "45.0%", "value": 5}, "Carp": {"quantity": 1, "rarity": "Common", "chance": "40.0%", "value": 6}}, "coins": 4724}
