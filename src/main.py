@@ -55,10 +55,14 @@ pygame.init() # initializing the game
 player = Player()
 shop = Shop()
 gamescreen = pygame.display.set_mode((900, 550)) # setting the resolution (how big the window is)
+bg2 = False
 
 
-background = pygame.image.load("../assets/sprites/bg.png") # retrieves the background's sprite
-background = pygame.transform.scale(background, (900, 550)).convert() # scale the background to fit
+background1 = pygame.image.load("../assets/sprites/bg.png") # retrieves the background's sprite
+background1 = pygame.transform.scale(background1, (900, 550)).convert() # scale the background to fit
+background2 = pygame.image.load("../assets/sprites/bg2.png") # retrieves the pier backround
+background2 = pygame.transform.scale(background2, (900, 550)).convert() # scale the background to fit
+
 
 pygame.display.set_caption("Hooked: Bestiary Odyssey")
 clock = pygame.time.Clock()
@@ -92,36 +96,45 @@ while running:
             print("Game saved successfully.")
             running = False
 
+        if player.xPos > 900 + player.rect.width and not bg2:
+            player.xPos = 0 - player.rect.width
+            bg2 = not bg2
+        elif player.xPos < 0 - player.rect.width and bg2:
+            player.xPos = 900 + player.rect.width
+            bg2 = not bg2
+
+
         # TEMPORARY "e" to fish
         if event.type == pygame.KEYDOWN:
 
             if event.key == pygame.K_e:
-                caughtFish = RNG(tempLootTable) # generates a fish to be caught based on the paramater (lootTable1) i.e. gives a fish from the lootTable1
+                if bg2 and player.xPos > 300 and player.xPos < 600:    
+                    caughtFish = RNG(tempLootTable) # generates a fish to be caught based on the paramater (lootTable1) i.e. gives a fish from the lootTable1
 
-                print("You caught a " + caughtFish[0] + "! Rarity: " + caughtFish[1] + ", Chance: " + caughtFish[2] + ", Value: " + str(caughtFish[3]) + " coins")
-                fishName = caughtFish[0]
+                    print("You caught a " + caughtFish[0] + "! Rarity: " + caughtFish[1] + ", Chance: " + caughtFish[2] + ", Value: " + str(caughtFish[3]) + " coins")
+                    fishName = caughtFish[0]
 
-                # checks if the fish already exists in the inventory, if so adds 1 to the count
-                if fishName in player.inventory: 
-                    player.inventory[fishName]["quantity"] += 1
-                
-                # if it doesnt exist it adds it along with the fish's info
+                    # checks if the fish already exists in the inventory, if so adds 1 to the count
+                    if fishName in player.inventory: 
+                        player.inventory[fishName]["quantity"] += 1
+                    
+                    # if it doesnt exist it adds it along with the fish's info
+                    else:
+                        player.inventory[fishName] = {
+                            "quantity": 1,
+                            "rarity": caughtFish[1],
+                            "chance": caughtFish[2],
+                            "value": caughtFish[3]
+                        }
                 else:
-                    player.inventory[fishName] = {
-                        "quantity": 1,
-                        "rarity": caughtFish[1],
-                        "chance": caughtFish[2],
-                        "value": caughtFish[3]
-                    }
+                    print("You can't fish here! Go to the pier to fish.")
         
-
         # open inventory
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_i:
                 print("Inventory:")
                 for fishName, info in player.inventory.items():   
                     print(f"{info["quantity"]}x {fishName}")
-
 
         # sell fish
         if event.type == pygame.KEYDOWN:
@@ -144,8 +157,12 @@ while running:
     player.movementUpdate()
 
     # draws the background, shop, and player every frame
-    gamescreen.blit(background, (0, 0)) 
-    shop.shopDraw(gamescreen)
+    if bg2:
+        gamescreen.blit(background2, (0, 0)) 
+    else:
+        gamescreen.blit(background1, (0, 0))
+        shop.shopDraw(gamescreen)
+    
     player.playerDraw(gamescreen)
     
     
