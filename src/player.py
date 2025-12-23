@@ -47,7 +47,15 @@ class Player:
          self.xPos += self.speed
          self.direction = "right"
 
-      self.rect.topleft = (self.xPos, self.yPos)
+
+   def updateCollisionRect(self):
+      legHeight = self.rect.height * 0.25
+
+      self.collisionRect = pygame.Rect(self.xPos, self.yPos + self.rect.height - legHeight, self.rect.width, legHeight)
+      return self.collisionRect
+
+
+
 
    def playerDraw(self, screen):
       if self.direction == "up":

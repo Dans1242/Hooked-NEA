@@ -4,6 +4,7 @@ from player import Player
 from shop import Shop
 from RNG import RNG
 from save_load import save_game, load_game, pickSave # imports functions needed for loading game, saving game, and picking/creating save slots
+from collision import collisionSquare
 
 # Temporary loot tables listed below:
 
@@ -155,7 +156,6 @@ while running:
 
 
     player.movementUpdate()
-
     # draws the background, shop, and player every frame
     if bg2:
         gamescreen.blit(background2, (0, 0)) 
@@ -164,6 +164,8 @@ while running:
         shop.shopDraw(gamescreen)
     
     player.playerDraw(gamescreen)
+    player.updateCollisionRect()
+    pygame.draw.rect(gamescreen, (255, 0, 0), player.collisionRect, 2)
     
     
     pygame.display.flip()
