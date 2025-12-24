@@ -51,7 +51,7 @@ class Player:
    def updateCollisionRect(self):
       legHeight = self.rect.height * 0.25
 
-      self.collisionRect = pygame.Rect(self.xPos, self.yPos + self.rect.height - legHeight, self.rect.width, legHeight)
+      self.collisionRect = pygame.Rect(self.xPos + self.rect.width / 4, self.yPos + self.rect.height - legHeight, self.rect.width / 2, legHeight)
       return self.collisionRect
 
 
