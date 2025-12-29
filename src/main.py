@@ -4,7 +4,7 @@ from player import Player
 from shop import Shop
 from RNG import RNG
 from save_load import save_game, load_game, pickSave # imports functions needed for loading game, saving game, and picking/creating save slots
-from collision import blockedAreasBG1, blockedAreasBG2
+from collision import blockedAreasBG1, blockedAreasBG2, checkCollision
 
 # Temporary loot tables listed below:
 
@@ -97,14 +97,6 @@ while running:
             print("Game saved successfully.")
             running = False
 
-        if player.xPos > 900 + player.rect.width and not bg2:
-            player.xPos = 0 - player.rect.width
-            bg2 = not bg2
-        elif player.xPos < 0 - player.rect.width and bg2:
-            player.xPos = 900 + player.rect.width
-            bg2 = not bg2
-
-
         # TEMPORARY "e" to fish
         if event.type == pygame.KEYDOWN:
 
@@ -130,6 +122,10 @@ while running:
                 else:
                     print("You can't fish here! Go to the pier to fish.")
         
+
+
+
+
         # open inventory
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_i:
@@ -155,17 +151,57 @@ while running:
                 print(f"You have {player.coins} coins.")
 
 
-    player.movementUpdate()
+    # background switch
+    if player.xPos > 900 and not bg2:
+        player.xPos = 0
+        bg2 = not bg2
+    elif player.xPos < 0 and bg2:
+        player.xPos = 900
+        bg2 = not bg2
+
+    # input desired movement
+    player.desiredMovement()
+
+    # x movement and collision check
+    player.xPos += player.xVel
+    player.updateCollisionRect()
+
+    hit = checkCollision(player.collisionRect, blockedAreasBG2 if bg2 else blockedAreasBG1)
+    if hit:
+        fd = hit["fd"]
+
+        if player.xVel > 0 and "right" in fd:
+            player.xPos -= player.xVel
+        elif player.xVel < 0 and "left" in fd:
+            player.xPos -= player.xVel
+
+    # y movement and collision check
+    player.yPos += player.yVel
+    player.updateCollisionRect()
+
+    hit = checkCollision(player.collisionRect, blockedAreasBG2 if bg2 else blockedAreasBG1)
+    if hit:
+        fd = hit["fd"]
+        if player.yVel > 0 and "down" in fd:
+            player.yPos -= player.yVel
+        elif player.yVel < 0 and "up" in fd:
+            player.yPos -= player.yVel
+
+
+
+
+
+
     # draws the background, shop, and player every frame
     if bg2:
         gamescreen.blit(background2, (0, 0))
         for blockedArea in blockedAreasBG2:
-            pygame.draw.rect(gamescreen, (0, 0, 255), blockedArea, 2)
+            pygame.draw.rect(gamescreen, (0, 0, 255), blockedArea["rect"], 2)
     else:
         gamescreen.blit(background1, (0, 0))
         shop.shopDraw(gamescreen)
         for blockedArea in blockedAreasBG1:
-            pygame.draw.rect(gamescreen, (0, 0, 255), blockedArea, 2)
+            pygame.draw.rect(gamescreen, (0, 0, 255), blockedArea["rect"], 2)
     
     player.playerDraw(gamescreen)
     player.updateCollisionRect()

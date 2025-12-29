@@ -32,20 +32,25 @@ class Player:
 
 
 
-   def movementUpdate(self):
+   def desiredMovement(self):
       keys = pygame.key.get_pressed()
-      if keys[pygame.K_w]:
-         self.yPos -= self.speed
-         self.direction = "up"
-      elif keys[pygame.K_a]:
-         self.xPos -= self.speed
+
+      self.xVel = 0
+      self.yVel = 0
+
+      if keys[pygame.K_a]:
+         self.xVel = -self.speed
          self.direction = "left"
-      elif keys[pygame.K_s]:
-         self.yPos += self.speed
-         self.direction = "down"
-      elif keys[pygame.K_d]:
-         self.xPos += self.speed
+      if keys[pygame.K_d]:
+         self.xVel = +self.speed
          self.direction = "right"
+      if keys[pygame.K_w]:
+         self.yVel = -self.speed
+         self.direction = "up"
+      if keys[pygame.K_s]:
+         self.yVel = +self.speed
+         self.direction = "down"
+
 
 
    def updateCollisionRect(self):
