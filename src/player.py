@@ -51,6 +51,11 @@ class Player:
          self.yVel = +self.speed
          self.direction = "down"
 
+      # normalise diagonal movement
+      if self.xVel != 0 and self.yVel != 0:
+         self.xVel *= 0.7071 # 1/sqrt(2)
+         self.yVel *= 0.7071
+
 
 
    def updateCollisionRect(self):
