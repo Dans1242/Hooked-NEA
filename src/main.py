@@ -58,6 +58,7 @@ shop = Shop()
 gamescreen = pygame.display.set_mode((900, 550)) # setting the resolution (how big the window is)
 
 
+titleBackground = pygame.image.load("../assets/sprites/titleBG.png")
 background1 = pygame.image.load("../assets/sprites/bg.png") # retrieves the background's sprite
 background1 = pygame.transform.scale(background1, (900, 550)).convert() # scale the background to fit
 background2 = pygame.image.load("../assets/sprites/bg2.png") # retrieves the pier backround
@@ -72,7 +73,7 @@ clock = pygame.time.Clock()
 # game loop
 def play(chosenSave):
     
-    
+
     # check if the save selected or created by the user exists in the saves folder
     if os.path.exists(chosenSave):
         load_game(player, chosenSave)
@@ -84,23 +85,20 @@ def play(chosenSave):
         save_game(player, chosenSave)
         print("New save file created.")
     
-    
     running = True
     bg2 = False
-    while running:
+    debugMode = False
 
-        # shutting down + saving process
+    while running:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if event.type == pygame.QUIT: #save and quit
                 save_game(player, chosenSave) # save the game using inventory and coin balance from player, at the current save
                 print("Game saved successfully.")
                 running = False
+            
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_e: #fishing
+                    if bg2 and player.xPos > 300 and player.xPos < 600:  
 
-            # TEMPORARY "e" to fish
-            if event.type == pygame.KEYDOWN:
-
-                if event.key == pygame.K_e:
-                    if bg2 and player.xPos > 300 and player.xPos < 600:    
                         caughtFish = RNG(tempLootTable) # generates a fish to be caught based on the paramater (lootTable1) i.e. gives a fish from the lootTable1
 
                         print("You caught a " + caughtFish[0] + "! Rarity: " + caughtFish[1] + ", Chance: " + caughtFish[2] + ", Value: " + str(caughtFish[3]) + " coins")
@@ -121,18 +119,12 @@ def play(chosenSave):
                     else:
                         print("You can't fish here! Go to the pier to fish.")
             
-
-
-            # open inventory
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_i:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_i: #check inventory
                     print("Inventory:")
                     for fishName, info in player.inventory.items():   
                         print(f"{info["quantity"]}x {fishName}")
 
-            # sell fish
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_q:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_q: #sell fish
                     confirmation = input("Are you sure you want to sell all your fish? (y/n): ")   
                     if confirmation.lower() == "y":
                         totalEarnings = shop.sellFish(player)
@@ -142,11 +134,11 @@ def play(chosenSave):
                     else:
                         print("Sale cancelled.")
 
-            # check coin balance
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_b:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_b: #check coin balance
                     print(f"You have {player.coins} coins.")
 
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_F3: #toggle debug mode
+                debugMode = not debugMode
 
         # background switch
         if player.xPos > 900 and not bg2:
@@ -184,28 +176,23 @@ def play(chosenSave):
             elif player.yVel < 0 and "up" in fd:
                 player.yPos -= player.yVel
 
-
-
-
-        # debug draw blocked areas
         if bg2:
             gamescreen.blit(background2, (0, 0))
-            # draws collision areas in bg2
-            # for blockedArea in blockedAreasBG2:
-            #     pygame.draw.rect(gamescreen, (0, 0, 255), blockedArea["rect"], 2)
+            if debugMode:
+                for blockedArea in blockedAreasBG2:
+                    pygame.draw.rect(gamescreen, (0, 0, 255), blockedArea["rect"], 2)
         else:
             gamescreen.blit(background1, (0, 0))
             shop.shopDraw(gamescreen)
-            # draws collision areas in bg1
-            # for blockedArea in blockedAreasBG1:
-            #     pygame.draw.rect(gamescreen, (0, 0, 255), blockedArea["rect"], 2)
-        
-        # draws the background, shop, and player every frame
-        player.playerDraw(gamescreen)
-        player.updateCollisionRect()
+            if debugMode:
+                for blockedArea in blockedAreasBG1:
+                    pygame.draw.rect(gamescreen, (0, 0, 255), blockedArea["rect"], 2)
+            
+        player.playerDraw(gamescreen) #draw player
+        player.updateCollisionRect() #updates player collision box
 
-        # draws the red collision box around the player for debugging
-        #pygame.draw.rect(gamescreen, (255, 0, 0), player.collisionRect, 2)
+        if debugMode: #draws the red collision box around the player for debugging
+            pygame.draw.rect(gamescreen, (255, 0, 0), player.collisionRect, 2)
         
         
         pygame.display.flip()
@@ -215,7 +202,12 @@ def play(chosenSave):
     pygame.quit()
 
 def titleScreen():
-    chosenSave = pickSave()
+    pygame.display.set_caption("Hooked: Bestiary Odyssey - Title Screen")
+    chosenSave = None
+    while chosenSave == None:
+        gamescreen.blit(titleBackground, (0, 0))
+        pygame.display.flip()
+        chosenSave = pickSave()
     return chosenSave
 
 chosenSave = titleScreen()
