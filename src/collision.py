@@ -24,3 +24,13 @@ def checkCollision(rect, blockedAreas):
             return area
     return None
 
+def debugDrawBlockedAreas(gamescreen, bg2, background1, background2):
+    if bg2:
+        gamescreen.blit(background2, (0, 0))
+        for blockedArea in blockedAreasBG2:
+            pygame.draw.rect(gamescreen, (0, 0, 255), blockedArea["rect"], 2)
+    else:
+        gamescreen.blit(background1, (0, 0))
+        for blockedArea in blockedAreasBG1:
+            pygame.draw.rect(gamescreen, (0, 0, 255), blockedArea["rect"], 2)
+

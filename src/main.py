@@ -190,22 +190,25 @@ while running:
 
 
 
-
-
-    # draws the background, shop, and player every frame
+    # debug draw blocked areas
     if bg2:
         gamescreen.blit(background2, (0, 0))
-        for blockedArea in blockedAreasBG2:
-            pygame.draw.rect(gamescreen, (0, 0, 255), blockedArea["rect"], 2)
+        # draws collision areas in bg2
+        #for blockedArea in blockedAreasBG2:
+            #pygame.draw.rect(gamescreen, (0, 0, 255), blockedArea["rect"], 2)
     else:
         gamescreen.blit(background1, (0, 0))
         shop.shopDraw(gamescreen)
-        for blockedArea in blockedAreasBG1:
-            pygame.draw.rect(gamescreen, (0, 0, 255), blockedArea["rect"], 2)
+        # draws collision areas in bg1
+        #for blockedArea in blockedAreasBG1:
+            #pygame.draw.rect(gamescreen, (0, 0, 255), blockedArea["rect"], 2)
     
+    # draws the background, shop, and player every frame
     player.playerDraw(gamescreen)
     player.updateCollisionRect()
-    pygame.draw.rect(gamescreen, (255, 0, 0), player.collisionRect, 2)
+
+    # draws the red collision box around the player for debugging
+    #pygame.draw.rect(gamescreen, (255, 0, 0), player.collisionRect, 2)
     
     
     pygame.display.flip()
