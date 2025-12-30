@@ -4,10 +4,6 @@ import pygame
 
 pygame.init()
 
-
-
-
-
 def save_game(player, filename):
     save_data = {
         "inventory": player.inventory,
@@ -22,9 +18,6 @@ def save_game(player, filename):
         json.dump(save_data, fileToSave)
 
 
-
-
-
 def load_game(player, filename):
     if os.path.exists(filename):
         with open(filename, "r") as fileToLoad: #r means read mode
@@ -37,12 +30,9 @@ def load_game(player, filename):
         return False
     
 
-
-
-
 def pickSave():
-    saveList = [file for file in os.listdir("saves") if file.endswith(".json")]
 
+    saveList = [file for file in os.listdir("saves") if file.endswith(".json")] # gets all the save files
     for save in enumerate(saveList):
         print(f"{save[0]+1}. {save[1]}")
     chosenSave = input("Enter the number of the save you want to load, or 'n' to create a new save: ")
