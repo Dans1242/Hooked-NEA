@@ -208,10 +208,10 @@ def titleScreen():
     
     
     playButton = Button(buttonImage, pygame.font.Font(None, 32), "Play", 450, 300, 0.2)
-    
+    playPressed = False
     
     chosenSave = None
-    while chosenSave == None:
+    while playPressed == False:
         mousePos = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -220,6 +220,7 @@ def titleScreen():
 
             if playButton.inputCheck(mousePos, event) == "clicked":
                 chosenSave = pickSave()
+                playPressed = True
         
         #draw everything
         gamescreen.blit(titleBackground, (0, 0))
