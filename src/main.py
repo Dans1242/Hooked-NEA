@@ -5,6 +5,7 @@ from shop import Shop
 from RNG import RNG
 from save_load import save_game, load_game, pickSave # imports functions needed for loading game, saving game, and picking/creating save slots
 from collision import blockedAreasBG1, blockedAreasBG2, checkCollision
+from ui import Button
 
 # Temporary loot tables listed below:
 
@@ -63,6 +64,7 @@ background1 = pygame.image.load("../assets/sprites/bg.png") # retrieves the back
 background1 = pygame.transform.scale(background1, (900, 550)).convert() # scale the background to fit
 background2 = pygame.image.load("../assets/sprites/bg2.png") # retrieves the pier backround
 background2 = pygame.transform.scale(background2, (900, 550)).convert() # scale the background to fit
+buttonImage = pygame.image.load("../assets/sprites/Button.png")
 
 
 pygame.display.set_caption("Hooked: Bestiary Odyssey")
@@ -203,11 +205,27 @@ def play(chosenSave):
 
 def titleScreen():
     pygame.display.set_caption("Hooked: Bestiary Odyssey - Title Screen")
+    
+    
+    playButton = Button(buttonImage, pygame.font.Font(None, 32), "Play", 450, 300, 0.2)
+    
+    
     chosenSave = None
     while chosenSave == None:
+        mousePos = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
+            if playButton.inputCheck(mousePos, event) == "clicked":
+                chosenSave = pickSave()
+        
+        #draw everything
         gamescreen.blit(titleBackground, (0, 0))
+        playButton.changeColour(mousePos) #hover effect
+        playButton.drawButton(gamescreen)
         pygame.display.flip()
-        chosenSave = pickSave()
     return chosenSave
 
 chosenSave = titleScreen()
