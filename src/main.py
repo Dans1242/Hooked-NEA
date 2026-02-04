@@ -205,9 +205,8 @@ def play(chosenSave):
 
 def titleScreen():
     pygame.display.set_caption("Hooked: Bestiary Odyssey - Title Screen")
-    
-    
-    playButton = Button(buttonImage, pygame.font.Font(None, 32), "Play", 450, 300, 0.2)
+    #Button(image, font, textDisplayed, x, y, scale))
+    playButton = Button(buttonImage, pygame.font.Font(None, 32), "Play", 450, 300, 0.2) # instance of button class as play button
     playPressed = False
     
     chosenSave = None
@@ -219,7 +218,7 @@ def titleScreen():
                 exit()
 
             if playButton.inputCheck(mousePos, event) == "clicked":
-                chosenSave = pickSave()
+                chosenSave = pickSave(gamescreen)
                 playPressed = True
         
         #draw everything
