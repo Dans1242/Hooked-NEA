@@ -218,10 +218,10 @@ def titleScreen():
                 exit()
 
             if playButton.inputCheck(mousePos, event) == "clicked":
-                chosenSave = pickSave(gamescreen)
+                chosenSave = pickSave(gamescreen) # brings you to a 9 box selection
                 playPressed = True
         
-        #draw everything
+        #code concerning play button
         gamescreen.blit(titleBackground, (0, 0))
         playButton.changeColour(mousePos) #hover effect
         playButton.drawButton(gamescreen)
