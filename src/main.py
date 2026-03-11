@@ -1,4 +1,3 @@
-from tkinter import font
 import pygame
 import os
 from player import Player
@@ -91,13 +90,6 @@ def play(chosenSave):
     running = True
     bg2 = False
     debugMode = False
-    showInventory = False
-    showShop = False
-    shopMessage = ""
-    shopResult = ""
-    shopResultTime = 0
-    font = pygame.font.SysFont("arial", 24, bold=True) #large font for UI elements
-    smallFont = pygame.font.SysFont("arial", 18) # smaller font for inventory items etc
 
     while running:
         for event in pygame.event.get():
@@ -130,33 +122,19 @@ def play(chosenSave):
                         print("You can't fish here! Go to the pier to fish.")
             
             if event.type == pygame.KEYDOWN and event.key == pygame.K_i: #check inventory
-                    showInventory = not showInventory
+                    print("Inventory:")
+                    for fishName, info in player.inventory.items():   
+                        print(f"{info["quantity"]}x {fishName}")
 
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_q: #sell fish
-                    if player.xPos > 300 and player.xPos < 600 and not bg2: #checks if the player is near the shop
-                        showShop = not showShop
-                        shopMessage = "Welcome to the shop. Press Y to sell all your fish, or N to cancel."
-
-                if event.key == pygame.K_y:
-                    if showShop:
-                        earnings = shop.sellFish(player)
-                        player.coins += earnings
-                        shopResult = f"You sold all your fish for {earnings} coins!"
-                        shopResultTime = pygame.time.get_ticks() # gets the current time in milliseconds
-                        shopMessage = ""
-                        showShop = False
-
-                if event.key == pygame.K_n:
-                    if showShop:                
-                        shopResult = "Sale cancelled. Come back anytime :)"
-                        shopResultTime = pygame.time.get_ticks() # gets the current time in milliseconds
-                        shopMessage = ""
-                        showShop = False
-
-
-
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_q: #sell fish
+                    confirmation = input("Are you sure you want to sell all your fish? (y/n): ")   
+                    if confirmation.lower() == "y":
+                        totalEarnings = shop.sellFish(player)
+                        print(f"You sold all your fish for {totalEarnings} coins!")
+                        player.coins += totalEarnings
+                        print(f"You now have {player.coins} coins.")
+                    else:
+                        print("Sale cancelled.")
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_b: #check coin balance
                     print(f"You have {player.coins} coins.")
@@ -215,39 +193,9 @@ def play(chosenSave):
         player.playerDraw(gamescreen) #draw player
         player.updateCollisionRect() #updates player collision box
 
-
-        # coin balance display
-        coinUI = font.render(f"Coins: {player.coins}", True, (255, 255, 0))
-        gamescreen.blit(coinUI, (10, 10))
-
         if debugMode: #draws the red collision box around the player for debugging
             pygame.draw.rect(gamescreen, (255, 0, 0), player.collisionRect, 2)
         
-        if showInventory:
-            inventoryPanel = pygame.Surface((200, 350)) # creates a surface for the inventory panel
-            inventoryPanel.set_alpha(200) # set transparency
-            inventoryPanel.fill((50, 50, 50)) # dark grey background
-            gamescreen.blit(inventoryPanel, (10, 50))
-
-            inventoryTitle = font.render("Inventory:", True, (255, 255, 255))
-            gamescreen.blit(inventoryTitle, (20, 60))
-            space = 100
-            for item, quantity in player.inventory.items():
-                itemText = smallFont.render(f"{item} x{quantity['quantity']}", True, (255, 255, 255))
-                gamescreen.blit(itemText, (20, space))
-                space += 25
-
-        if showShop:
-            shopText = smallFont.render(shopMessage, True, (255, 255, 255))
-            gamescreen.blit(shopText, (200, 500))
-
-        if shopResult and not showShop:
-            if pygame.time.get_ticks() - shopResultTime < 2000: # result dissapears after 2 seconds
-                resultText = smallFont.render(shopResult, True, (255, 255, 255))
-                gamescreen.blit(resultText, (200, 500))
-            else:
-                shopResult = "" # clear result after 2seconds
-
         
         pygame.display.flip()
         clock.tick(60) # set FPS
@@ -257,12 +205,6 @@ def play(chosenSave):
 
 def titleScreen():
     pygame.display.set_caption("Hooked: Bestiary Odyssey - Title Screen")
-
-    titleFont = pygame.font.SysFont("arial", 128, bold=True)
-    subTitleFont = pygame.font.SysFont("arial", 32)
-    titleText = titleFont.render("Hooked", True, (209, 142, 61))
-    subTitleText = subTitleFont.render("Bestiary Odyssey", True, (255, 255, 255))
-    
     #Button(image, font, textDisplayed, x, y, scale))
     playButton = Button(buttonImage, pygame.font.Font(None, 32), "Play", 450, 300, 0.2) # instance of button class as play button
     playPressed = False
@@ -281,8 +223,6 @@ def titleScreen():
         
         #code concerning play button
         gamescreen.blit(titleBackground, (0, 0))
-        gamescreen.blit(titleText, (220, 75))
-        gamescreen.blit(subTitleText, (325, 200))
         playButton.changeColour(mousePos) #hover effect
         playButton.drawButton(gamescreen)
         pygame.display.flip()
