@@ -1,1 +1,1 @@
-{"inventory": {"Herring": {"quantity": 1, "rarity": "Common", "chance": "15.0%", "value": 6}}, "coins": 487}
+{"inventory": {"Tuna": {"quantity": 1, "rarity": "Rare", "chance": "6.0%", "value": 25}, "Salmon": {"quantity": 2, "rarity": "Common", "chance": "20.0%", "value": 7}, "Herring": {"quantity": 1, "rarity": "Common", "chance": "15.0%", "value": 6}, "Minnow": {"quantity": 3, "rarity": "Common", "chance": "30.0%", "value": 2}, "Carp": {"quantity": 2, "rarity": "Common", "chance": "25.0%", "value": 5}}, "coins": 2414}
