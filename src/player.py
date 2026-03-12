@@ -26,10 +26,12 @@ class Player:
       self.image = self.spriteRight
       self.rect = self.image.get_rect(topleft=(self.xPos, self.yPos))
 
+      #data
       self.inventory = {}
-
       self.coins = 0
-
+      self.lureSpeed = 1
+      self.luck = 1
+      self.valueBoost = 1
 
 
    def desiredMovement(self):
@@ -64,7 +66,13 @@ class Player:
       self.collisionRect = pygame.Rect(self.xPos + self.rect.width / 4, self.yPos + self.rect.height - legHeight, self.rect.width / 2, legHeight)
       return self.collisionRect
 
-
+   def buyUpgrade(self, upgrade, cost):
+      if self.coins >= cost:
+         self.coins -= cost
+         #setattr(self, upgrade, (value to set it to) )
+         setattr(self, upgrade, getattr(self, upgrade) + 1)
+         return True
+      return False
 
 
    def playerDraw(self, screen):

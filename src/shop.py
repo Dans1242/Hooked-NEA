@@ -15,7 +15,7 @@ class Shop:
         if player.inventory:
             totalValue = 0
             for RNG.fishName, info in player.inventory.items():
-                fishValue = info['value'] * info['quantity']
+                fishValue = info['value'] * info['quantity'] * player.valueBoost
                 totalValue += fishValue
             player.inventory.clear()
             return totalValue

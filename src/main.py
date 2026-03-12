@@ -49,6 +49,15 @@ raritySettings = {
     "Secret":    {"clicks": 3, "window": 0.5,  "colour": (0, 0, 0)},    # black
 }
 
+
+# SHOP COSTS
+upgradeCosts = {
+    "lureSpeed": [100, 200, 400, 800],
+    "luck": [150, 300, 600, 1200],
+    "valueBoost": [200, 400, 800, 1600]
+}
+
+
 pygame.init() # initializing the game
 
 player = Player()
@@ -89,6 +98,7 @@ def play(chosenSave):
     debugMode = False
     showInventory = False
     showShop = False
+    shopMode = None
     shopMessage = ""
     shopResult = ""
     shopResultTime = 0
@@ -131,13 +141,14 @@ def play(chosenSave):
 
 
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_q: #sell fish
+                if event.key == pygame.K_q:
                     if player.xPos > 300 and player.xPos < 600 and not bg2: #checks if the player is near the shop
                         showShop = not showShop
-                        shopMessage = "Welcome to the shop. Press Y to sell all your fish, or N to cancel."
+                        shopMode = "sell"
+                        shopMessage = "Press Y to sell all your fish, B to browse upgrades, N to cancel."
 
                 if event.key == pygame.K_y:
-                    if showShop:
+                    if showShop and shopMode == "sell":
                         earnings = shop.sellFish(player)
                         player.coins += earnings
                         shopResult = f"You sold all your fish for {earnings} coins!"
@@ -145,13 +156,54 @@ def play(chosenSave):
                         shopMessage = ""
                         showShop = False
 
+                if event.key == pygame.K_b:
+                    if showShop:
+                        shopMode = "buy"
+
+
                 if event.key == pygame.K_n:
-                    if showShop:                
-                        shopResult = "Sale cancelled. Come back anytime :)"
+                    if showShop and shopMode == "sell":                
+                        shopResult = "Exiting the shop..."
                         shopResultTime = pygame.time.get_ticks() # gets the current time in milliseconds
                         shopMessage = ""
                         showShop = False
 
+                if event.key == pygame.K_ESCAPE:
+                    if showShop:
+                        showShop = False
+                        shopMode = "sell"
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                    if showShop and shopMode == "buy":
+                        if buyLureButton.inputCheck(mousePos, event) == "clicked":
+                            if player.lureSpeed < 5:
+                                if player.buyUpgrade("lureSpeed", upgradeCosts["lureSpeed"][player.lureSpeed - 1]):
+                                    shopResult = "Lure Speed upgraded!"
+                                    shopResultTime = pygame.time.get_ticks()                                
+                                else:
+                                    shopResult = "Not enough coins for Lure Speed upgrade."
+                                    shopResultTime = pygame.time.get_ticks()
+                        elif buyLuckButton.inputCheck(mousePos, event) == "clicked":
+                            if player.lureSpeed < 5:
+                                if player.buyUpgrade("luck", upgradeCosts["luck"][player.luck - 1]):
+                                    shopResult = "Luck upgraded!"
+                                    shopResultTime = pygame.time.get_ticks()
+                                else:
+                                    shopResult = "Not enough coins for Luck upgrade."
+                                    shopResultTime = pygame.time.get_ticks()
+                        elif buyValueButton.inputCheck(mousePos, event) == "clicked":
+                            if player.lureSpeed < 5:
+                                if player.buyUpgrade("valueBoost", upgradeCosts["valueBoost"][player.valueBoost - 1]):
+                                    shopResult = "Value Boost upgraded!"
+                                    shopResultTime = pygame.time.get_ticks()
+                                else:
+                                    shopResult = "Not enough coins for Value Boost upgrade."
+                                    shopResultTime = pygame.time.get_ticks()
+                        else:
+                            shopResult = ""
+                            shopResultTime = pygame.time.get_ticks()
+
+                            
             if event.type == pygame.MOUSEBUTTONDOWN: # checks for a mouse click
                 if fishingState == "minigame":
                     clickCount += 1 # adds click everytime the player clicks
@@ -254,8 +306,62 @@ def play(chosenSave):
                 space += 25
 
         if showShop:
-            shopText = smallFont.render(shopMessage, True, (255, 255, 255))
-            gamescreen.blit(shopText, (200, 500))
+            if shopMode == "sell":
+                shopText = smallFont.render(shopMessage, True, (255, 255, 255))
+                gamescreen.blit(shopText, (200, 500))
+
+            elif shopMode == "buy":
+                shopPanel = pygame.Surface((400, 175)) # creates a surface for the shop panel
+                shopPanel.set_alpha(200) # set transparency
+                shopPanel.fill((50, 50, 50)) # dark grey background
+                gamescreen.blit(shopPanel, (150, 50))
+                # This is essentially the same as the inventory backround but bigger
+                
+                shopTitle = font.render("Upgrades:", True, (255, 255, 255))
+                gamescreen.blit(shopTitle, (170, 60))
+
+                if shopResult:
+                    if pygame.time.get_ticks() - shopResultTime < 2000: # result dissapears after 2 seconds
+                        resultText = smallFont.render(shopResult, True, (255, 255, 255))
+                        gamescreen.blit(resultText, (200, 500))
+                    else:
+                        shopResult = "" # clear result after 2seconds
+
+
+                yOffset = 0
+                for upgrade, costs in upgradeCosts.items():
+                    level = getattr(player, upgrade)
+                    if level < 5:
+                        cost = costs[level - 1] # gets the cost for the next level
+                        costText = f"Cost: {cost} coins"
+                    else:
+                        costText = "MAX"
+
+                    upgradeText = smallFont.render(f"{upgrade} | Lvl {level} | {costText}", True, (255, 255, 255))
+                    gamescreen.blit(upgradeText, (170, 110 + yOffset))
+                    yOffset += 40
+
+                # DRAW BUTTONS
+                buyLureButton = Button(buttonImage, smallFont, "Buy", 500, 120, 0.15)
+                buyLuckButton = Button(buttonImage, smallFont, "Buy", 500, 160, 0.15)
+                buyValueButton = Button(buttonImage, smallFont, "Buy", 500, 200, 0.15)
+
+                mousePos = pygame.mouse.get_pos()
+
+                buyLureButton.changeColour(mousePos)
+                buyLureButton.drawButton(gamescreen)
+                buyLuckButton.changeColour(mousePos)
+                buyLuckButton.drawButton(gamescreen)
+                buyValueButton.changeColour(mousePos)
+                buyValueButton.drawButton(gamescreen)
+
+
+
+
+
+
+
+
 
         if shopResult and not showShop:
             if pygame.time.get_ticks() - shopResultTime < 2000: # result dissapears after 2 seconds
@@ -275,7 +381,7 @@ def play(chosenSave):
                 yOffset += 20 # offset for each message above eachother
 
         if fishingState == "casting":
-            if pygame.time.get_ticks() - castTime > 500: # makes the player wait 5 seconds after casting before fish bites
+            if pygame.time.get_ticks() - castTime > 5000 - (player.lureSpeed -1) * 500:
                 fishingState = "warning"
                 minigameStartTime = pygame.time.get_ticks()
                 rarity = pendingFish[1] # fethecs rarity from the randomised fish
@@ -290,7 +396,7 @@ def play(chosenSave):
         if fishingState == "warning":
             exclamationText = exclamationFont.render("!", True, (exclamationColour))
             gamescreen.blit(exclamationText, (player.xPos + 15, player.yPos - 60))
-            if pygame.time.get_ticks() - minigameStartTime > 2000: # ! lasts for 2 seconds
+            if pygame.time.get_ticks() - minigameStartTime > 1000: # ! lasts for 2 seconds
                 fishingState = "minigame"
                 minigameStartTime = pygame.time.get_ticks() #resets the timer for click window
 

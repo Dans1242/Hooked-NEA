@@ -11,7 +11,10 @@ titleBackground = pygame.image.load("../assets/sprites/titleBG.png")
 def save_game(player, filename):
     save_data = {
         "inventory": player.inventory,
-        "coins": player.coins
+        "coins": player.coins,
+        "lureSpeed": player.lureSpeed,
+        "luck": player.luck,
+        "valueBoost": player.valueBoost
     }
 
     save_folder = os.path.dirname(filename)
@@ -28,6 +31,9 @@ def load_game(player, filename):
             save_data = json.load(fileToLoad)
             player.inventory = save_data.get("inventory", {})
             player.coins = save_data.get("coins", 0)
+            player.lureSpeed = save_data.get("lureSpeed", 1)
+            player.luck = save_data.get("luck", 1)
+            player.valueBoost = save_data.get("valueBoost", 1)
         return True
     else:
         print("No save file found.")

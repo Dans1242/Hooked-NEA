@@ -1,1 +1,1 @@
-{"inventory": {"Salmon": {"quantity": 3, "rarity": "Common", "chance": "20.0%", "value": 7}, "Minnow": {"quantity": 5, "rarity": "Common", "chance": "30.0%", "value": 2}, "Cod": {"quantity": 2, "rarity": "Rare", "chance": "7.000000000000001%", "value": 20}}, "coins": 101}
+{"inventory": {"Minnow": {"quantity": 1, "rarity": "Common", "chance": "30.0%", "value": 2}}, "coins": 10, "lureSpeed": 2, "luck": 2, "valueBoost": 2}
